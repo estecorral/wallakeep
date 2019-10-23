@@ -3,9 +3,7 @@ import { withRouter } from "react-router-dom";
 import UserContext from "../../context/user";
 
 class List extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+
     render()
     {
        console.log(this.context);

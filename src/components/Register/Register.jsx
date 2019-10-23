@@ -5,6 +5,7 @@ import './Register.css';
 import {Navbar} from "react-bootstrap";
 import {Form} from "react-bootstrap";
 import {Button} from "react-bootstrap";
+import { getTags } from "../../API/api";
 
 class Register extends React.Component {
     constructor(props) {
@@ -16,9 +17,17 @@ class Register extends React.Component {
                 tag: null,
             }
         };
+
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
+
+    componentDidMount() {
+        let tags = getTags();
+        console.log(tags);
+        console.log(getTags());
+    }
+
     handleChange(event) {
         const target = event.target;
         const value = target.value;
@@ -35,7 +44,7 @@ class Register extends React.Component {
         if (this.state.user.name.trim().length === 0 || this.state.user.surname.trim().length === 0) {
             alert('Alguno de los campos esta vacio');
         }
-        this.user = this.state.user;
+        this.context.updateUser(this.state.user);
         this.props.history.push("/list");
     }
 
@@ -75,6 +84,9 @@ class Register extends React.Component {
                                     <Form.Control as="select"
                                                   name="tag"
                                                   onChange={this.handleChange}>
+                                        {
+
+                                        }
                                         <option>1</option>
                                         <option>2</option>
                                         <option>3</option>

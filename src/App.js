@@ -8,19 +8,28 @@ import UserContext from "./context/user";
 export default class App extends React.Component{
     constructor(props) {
         super(props);
+        this.updateUser = this.updateUser.bind(this);
         this.state = {
-            user: {}
+            user: {},
+            updateUser: this.updateUser,
         }
     }
 
+    updateUser = (user) => {
+        this.setState({ user });
+    };
     render() {
         return (
             <div className="App">
-                <UserContext.Provider value={this.state}>
+                <UserContext.Provider value = {this.state}>
                     <Router>
                         <Switch>
-                            <Route path='/register' component={Register}/>
-                            <Route path='/list' component={List}/>
+                            <Route path='/register' component={Register}>
+                                <Register reg={this.register}/>
+                            </Route>
+                            <Route path='/list' component={List}>
+                                <List/>
+                            </Route>
                             <Route component={Register}/>
                         </Switch>
                     </Router>
