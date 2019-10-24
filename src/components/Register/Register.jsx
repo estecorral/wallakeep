@@ -15,18 +15,27 @@ class Register extends React.Component {
                 name: '',
                 surname: '',
                 tag: null,
-            }
+            },
+            tags : [],
         };
-
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
-        let tags = getTags();
-        console.log(tags);
-        console.log(getTags());
+        getTags().then(tags => {
+            this.setState({
+                tags,
+            });
+        });
     }
+
+     selectTags() {
+            this.state.tags.map(tag => {
+                console.log(tag);
+                return <option>{ tag }</option>;
+            });
+     }
 
     handleChange(event) {
         const target = event.target;
@@ -41,8 +50,10 @@ class Register extends React.Component {
     }
     handleSubmit(event) {
         event.preventDefault();
-        if (this.state.user.name.trim().length === 0 || this.state.user.surname.trim().length === 0) {
+        if (this.state.user.name.trim().length === 0 || this.state.user.surname.trim().length === 0 ||
+        !this.state.user.tag) {
             alert('Alguno de los campos esta vacio');
+            return;
         }
         this.context.updateUser(this.state.user);
         this.props.history.push("/list");
@@ -84,14 +95,12 @@ class Register extends React.Component {
                                     <Form.Control as="select"
                                                   name="tag"
                                                   onChange={this.handleChange}>
+                                        <option>--</option>
                                         {
-
+                                            this.state.tags.map((tag, i) => {
+                                                return <option key={i}>{ tag }</option>;
+                                            })
                                         }
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
                                     </Form.Control>
                                 </Form.Group>
                                 <Button variant="primary" type="submit">
