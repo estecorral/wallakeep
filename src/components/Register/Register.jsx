@@ -30,13 +30,6 @@ class Register extends React.Component {
         });
     }
 
-     selectTags() {
-            this.state.tags.map(tag => {
-                console.log(tag);
-                return <option>{ tag }</option>;
-            });
-     }
-
     handleChange(event) {
         const target = event.target;
         const value = target.value;
@@ -56,7 +49,7 @@ class Register extends React.Component {
             return;
         }
         this.context.updateUser(this.state.user);
-        this.props.history.push("/list");
+        this.props.history.push(`/list/${this.state.user.tag}`);
     }
 
         render()
