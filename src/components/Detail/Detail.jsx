@@ -1,7 +1,7 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { getOneAd} from "../../API/api";
-import {Navbar, Figure, Badge, Card, Button} from "react-bootstrap";
+import { getOneAd } from "../../API/api";
+import { Navbar, Figure, Badge, Button } from "react-bootstrap";
 
 class Detail extends React.Component {
     constructor(props) {
@@ -11,9 +11,16 @@ class Detail extends React.Component {
 
         getOneAd(adID).then(ad => {
             this.setState({ ad });
-            console.log(this.state);
-        })
+        });
     }
+    goTolist = () => {
+        this.props.history.push('/list');
+    };
+
+    gotoEdit = (event) => {
+        event.preventDefault();
+        this.props.history.push(`/create/${event.target.id}`);
+    };
 
     render() {
         const { ad } = this.state;
@@ -42,14 +49,25 @@ class Detail extends React.Component {
                         width={171}
                         height={180}
                         alt="400x300"
-                        src={`http://localhost:3001${ad.photo}`}
+                        src={ad.photo.slice(1,7) === 'images' ? `http://localhost:3001${ad.photo}` : `${ad.photo}`}
                     />
                     <Figure.Caption>
-                        <h4>{ad.name} <Badge variant="info">{ad.price}€</Badge> <Badge variant="success"> {ad.type}</Badge></h4>
+                        <h4>{ad.name} <Badge variant="info">{ad.price}€</Badge> <Badge variant={ad.type === 'sell' ? "danger" : "success"}> {ad.type}</Badge></h4>
                         {ad.description}
                     </Figure.Caption>
                     <br/>
-                    <Button variant="primary">Editar</Button>
+                        {
+                            ad.tags.map((tag, i) => {
+                                return(
+                                    <Badge pill key={i} variant="secondary">
+                                        {tag}
+                                    </Badge>
+                                );
+                            })
+                        }
+                    <br/>
+                    <Button variant="primary" id={ad._id} onClick={this.gotoEdit}>Editar</Button>
+                    <Button variant="danger" onClick={this.goTolist}>Volver</Button>
                 </Figure>
             }
             </div>

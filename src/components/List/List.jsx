@@ -3,13 +3,14 @@ import { withRouter } from "react-router-dom";
 import UserContext from "../../context/user";
 import { getTags, getAds} from "../../API/api";
 import {Navbar, FormControl, Button, Form, Card, Jumbotron, Badge} from "react-bootstrap";
+import { restoreUser, deleteStorage } from "../../storage/storage";
 
 class List extends React.Component {
     constructor(props) {
         super(props);
             this.state= {
                 ads: [],
-                myTag: this.props.match.params.tag,
+                myTag: '',
                 price: '',
                 name: '',
                 type: '',
@@ -18,14 +19,29 @@ class List extends React.Component {
         this.actualizaAds();
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.deleteProfile = this.deleteProfile.bind(this);
     }
 
     componentDidMount() {
+        this.updateUserFromStorage();
         getTags().then(tags => {
             this.setState({
                 tags,
             });
         });
+    }
+
+    deleteProfile(event) {
+        event.preventDefault();
+        deleteStorage();
+        this.props.history.push('/register');
+    }
+
+    updateUserFromStorage() {
+        if (restoreUser() !== null) {
+            return this.context.updateUser(restoreUser());
+        }
+        this.props.history.push('/register');
     }
 
     actualizaAds() {
@@ -37,18 +53,22 @@ class List extends React.Component {
     }
 
     goDetail = (event) => {
-        console.log(event.target.id);
         event.preventDefault();
         this.props.history.push(`/detail/${event.target.id}`);
+    };
+
+    newAdd = () => {
+        this.props.history.push('/create');
     };
 
     buildAds = () => {
                  return this.state.ads.map((ad) => {
                     return(
                         <Card key={ad._id} style={{ width: '18rem' }}>
-                            <Card.Img variant="top" src={`http://localhost:3001${ad.photo}`}/>
+                            <Card.Img variant="top" src={ad.photo.slice(1,7) === 'images' ? `http://localhost:3001${ad.photo}` :
+                                `${ad.photo}`}/>
                             <Card.Body>
-                                <Card.Title>{ad.name} <Badge variant="info">{ad.price}€</Badge> <Badge variant="success"> {ad.type}</Badge></Card.Title>
+                                <Card.Title>{ad.name} <Badge variant="info">{ad.price}€</Badge> <Badge variant={ad.type === 'sell' ? "danger" : "success"}> {ad.type}</Badge></Card.Title>
                                 <Card.Text>
                                     {ad.description}
                                 </Card.Text>
@@ -74,6 +94,10 @@ class List extends React.Component {
     }
     render()
     {
+        const  user = this.context.user;
+        if (Object.entries(user).length === 0) {
+            return null;
+        }
         return (
             <div>
                 <Navbar bg="primary" variant="dark">
@@ -85,9 +109,10 @@ class List extends React.Component {
                         />
                         {' Wallakeep '}
                     </Navbar.Brand>
+                    <Button variant="danger" onClick={this.newAdd}>Crear Anuncio</Button>
                     <Navbar.Collapse className="justify-content-end">
-                        <Navbar.Text>
-                            Bienvenido: <b>{this.context.user.name}</b>
+                        <Navbar.Text onClick={this.deleteProfile}>
+                            Bienvenido: <b>{user.name}</b>
                         </Navbar.Text>
                     </Navbar.Collapse>
                 </Navbar>
@@ -103,7 +128,9 @@ class List extends React.Component {
                             <option>2001-10000000</option>
                         </FormControl>
                         <FormControl type="text" name="name" placeholder="Nombre" className="mr-sm-2" onChange={this.handleChange}/>
-                        <FormControl as="select" name="myTag" placeholder="Tag" className={"mr-sm-2"} onChange={this.handleChange}>
+                        <FormControl as="select" name="myTag" placeholder="Tag" className={"mr-sm-2"}
+                                     value={this.context.user.tag ? this.context.user.tag : user.tag }
+                                     onChange={this.handleChange}>
                             <option>Tag</option>
                             <option>all</option>
                             {

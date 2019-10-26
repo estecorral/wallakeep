@@ -6,6 +6,7 @@ import {Navbar} from "react-bootstrap";
 import {Form} from "react-bootstrap";
 import {Button} from "react-bootstrap";
 import { getTags } from "../../API/api";
+import { saveUser, deleteStorage } from '../../storage/storage';
 
 class Register extends React.Component {
     constructor(props) {
@@ -23,6 +24,7 @@ class Register extends React.Component {
     }
 
     componentDidMount() {
+        deleteStorage();
         getTags().then(tags => {
             this.setState({
                 tags,
@@ -49,7 +51,8 @@ class Register extends React.Component {
             return;
         }
         this.context.updateUser(this.state.user);
-        this.props.history.push(`/list/${this.state.user.tag}`);
+        saveUser(this.state.user);
+        this.props.history.push(`/list`);
     }
 
         render()
