@@ -91,7 +91,6 @@ class Create extends React.Component {
         const { ad } = this.state;
         const user = restoreUser();
         return(
-
             <div className="createDiv">
                 <Navbar bg="primary" variant="dark">
                     <Navbar.Brand>
@@ -108,6 +107,9 @@ class Create extends React.Component {
                         </Navbar.Text>
                     </Navbar.Collapse>
                 </Navbar>
+                {
+                    ad &&
+                <React.Fragment>
                 <h3>{ad.name ? "Editar anuncio" : "Crear nuevo anuncio"}</h3>
                 <h6>{this.state.adID ? "id: " + this.state.adID : ""}</h6>
                 <div className="formDiv">
@@ -167,6 +169,12 @@ class Create extends React.Component {
                             </div>
                     </Form>
                 </div>
+                </React.Fragment>
+                    }
+                {
+                    !ad &&
+                        <h1>Loading...</h1>
+                }
             </div>
         );
     }

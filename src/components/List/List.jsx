@@ -79,7 +79,6 @@ class List extends React.Component {
                 )
             });
         }else {
-            console.log(this.state.ads);
             return (
                 <Alert variant="danger" className="alerts">
                     No se han encontrado anuncios con los filtros indicados
