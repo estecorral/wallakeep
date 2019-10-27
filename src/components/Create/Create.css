@@ -1,0 +1,18 @@
+.createDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.formDiv {
+    display: flex;
+    justify-content: center;
+}
+.form {
+    width: 500px;
+}
+.divButtons {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    width: 200px;
+}

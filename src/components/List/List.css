@@ -1,0 +1,13 @@
+.divCars {
+    width: 98vw;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.cards {
+    width: 20rem;
+}
+.navStyle {
+    padding: 0;
+}

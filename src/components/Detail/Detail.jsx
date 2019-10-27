@@ -2,6 +2,7 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import { getOneAd } from "../../API/api";
 import { Navbar, Figure, Badge, Button } from "react-bootstrap";
+import { restoreUser, deleteStorage } from "../../storage/storage";
 
 class Detail extends React.Component {
     constructor(props) {
@@ -12,6 +13,7 @@ class Detail extends React.Component {
         getOneAd(adID).then(ad => {
             this.setState({ ad });
         });
+        this.deleteProfile = this.deleteProfile.bind(this);
     }
     goTolist = () => {
         this.props.history.push('/list');
@@ -22,8 +24,15 @@ class Detail extends React.Component {
         this.props.history.push(`/create/${event.target.id}`);
     };
 
+    deleteProfile(event) {
+        event.preventDefault();
+        deleteStorage();
+        this.props.history.push('/register');
+    }
+
     render() {
         const { ad } = this.state;
+        const user = restoreUser();
         return(
             <div>
                 <Navbar bg="primary" variant="dark">
@@ -36,19 +45,19 @@ class Detail extends React.Component {
                         {' Wallakeep '}
                     </Navbar.Brand>
                     <Navbar.Collapse className="justify-content-end">
-                        <Navbar.Text>
-                            Bienvenido: <b>{}</b>
+                        <Navbar.Text onClick={this.deleteProfile}>
+                            Bienvenido: <b>{ user.name }</b>
                         </Navbar.Text>
                     </Navbar.Collapse>
                 </Navbar>
             {
                 ad
                 &&
-                <Figure>
+                <Figure className="figure">
                     <Figure.Image
                         width={171}
                         height={180}
-                        alt="400x300"
+                        alt="500x400"
                         src={ad.photo.slice(1,7) === 'images' ? `http://localhost:3001${ad.photo}` : `${ad.photo}`}
                     />
                     <Figure.Caption>
@@ -66,8 +75,8 @@ class Detail extends React.Component {
                             })
                         }
                     <br/>
-                    <Button variant="primary" id={ad._id} onClick={this.gotoEdit}>Editar</Button>
-                    <Button variant="danger" onClick={this.goTolist}>Volver</Button>
+                        <Button variant="primary" id={ad._id} onClick={this.gotoEdit}>Editar</Button>
+                        <Button variant="danger" onClick={this.goTolist}>Volver</Button>
                 </Figure>
             }
             </div>

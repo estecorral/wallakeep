@@ -3,6 +3,8 @@ import { withRouter } from "react-router-dom";
 import { Navbar, Form, Button } from "react-bootstrap";
 import { newAd, updateAd } from "../../API/api";
 import { getOneAd } from "../../API/api";
+import { restoreUser, deleteStorage } from "../../storage/storage";
+import './Create.css';
 
 class Create extends React.Component {
     constructor(props) {
@@ -26,10 +28,17 @@ class Create extends React.Component {
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.deleteProfile = this.deleteProfile.bind(this);
     }
     goTolist = () => {
         this.props.history.push('/list');
     };
+
+    deleteProfile(event) {
+        event.preventDefault();
+        deleteStorage();
+        this.props.history.push('/register');
+    }
 
     handleChange(event) {
         const target = event.target;
@@ -45,6 +54,25 @@ class Create extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
+        if(this.state.ad.name.trim().length <= 3) {
+            alert("El nombre ha de tener + de 3 letras");
+            return;
+        } if (!Number.isInteger(parseInt(this.state.ad.price))){
+            alert("El precio ha de ser un número");
+            return;
+        } if (this.state.ad.description.trim().length <= 3) {
+            alert("Descripción demasiado corta");
+            return;
+        } if (!this.state.ad.type || this.state.ad.type === '--') {
+            alert("Debe de seleccionar un tipo de anuncio");
+            return;
+        } if (this.state.ad.photo.trim().length <= 3) {
+            alert("URL foto de masiado corta");
+            return;
+        } if (this.state.ad.tags.length === 0) {
+            alert("Debe de seleccionar al menos un tag");
+            return;
+        }
         if (!this.state.adID) {
             newAd(this.state.ad).then(res => console.log(res));
                 setTimeout(() => {
@@ -61,10 +89,10 @@ class Create extends React.Component {
 
     render() {
         const { ad } = this.state;
-
+        const user = restoreUser();
         return(
 
-            <div>
+            <div className="createDiv">
                 <Navbar bg="primary" variant="dark">
                     <Navbar.Brand>
                         <img
@@ -75,76 +103,70 @@ class Create extends React.Component {
                         {' Wallakeep '}
                     </Navbar.Brand>
                     <Navbar.Collapse className="justify-content-end">
-                        <Navbar.Text>
-                            Bienvenido: <b>{}</b>
+                        <Navbar.Text onClick={this.deleteProfile}>
+                            Bienvenido: <b>{ user.name }</b>
                         </Navbar.Text>
                     </Navbar.Collapse>
                 </Navbar>
                 <h3>{ad.name ? "Editar anuncio" : "Crear nuevo anuncio"}</h3>
                 <h6>{this.state.adID ? "id: " + this.state.adID : ""}</h6>
-                <Form onSubmit={this.handleSubmit}>
-                    <Form.Group controlId="name">
-                        <Form.Label>Nombre anuncio</Form.Label>
-                        <Form.Control type="name" placeholder="Nombre Anuncio"
-                                      name="name"
-                                      value={ad.name}
-                                      onChange={this.handleChange}/>
-                    </Form.Group>
-                    <Form.Group controlId="price">
-                        <Form.Label>Precio</Form.Label>
-                        <Form.Control type="precio" placeholder="Precio"
-                                      name="price"
-                                      value={ad.price}
-                                      onChange={this.handleChange}/>
-                        <Form.Group controlId="description">
-                            <Form.Label>Descripción</Form.Label>
-                            <Form.Control as="textarea" rows="3"
-                                          name="description"
-                                          value={ad.description}
+                <div className="formDiv">
+                    <Form onSubmit={this.handleSubmit} className="form">
+                            <Form.Label>Nombre anuncio</Form.Label>
+                            <Form.Control type="name" placeholder="Nombre Anuncio"
+                                          name="name"
+                                          value={ad.name}
                                           onChange={this.handleChange}/>
-                        </Form.Group>
-                    </Form.Group>
-                    <Form.Group controlId="type">
-                        <Form.Label>Tipo</Form.Label>
-                        <Form.Control as="select"
-                                      name="type"
-                                      value={ad.type}
-                                      onChange={this.handleChange}>
-                            <option>--</option>
-                            <option>buy</option>
-                            <option>sell</option>
-                        </Form.Control>
-                        <Form.Group controlId="photo">
-                            <Form.Label>Imagen anuncio</Form.Label>
-                            <Form.Control type="photo" placeholder="Foto del anuncio"
-                                          name="photo"
-                                          value={ad.photo}
+                            <Form.Label>Precio</Form.Label>
+                            <Form.Control type="precio" placeholder="Precio"
+                                          name="price"
+                                          value={ad.price}
                                           onChange={this.handleChange}/>
-                        </Form.Group>
-                        <Form.Label>Tags</Form.Label>
-                        <Form.Control as="select" name="tags"
-                                      onChange={this.handleChange}
-                                      style={this.state.adID ? {display: 'none'} : {display: 'true'}} multiple>
-                            <option>lifestyle</option>
-                            <option>mobile</option>
-                            <option>motor</option>
-                            <option>work</option>
-                        </Form.Control>
-                        <Form.Control as="select" name="tags"
-                                      value={ad.tags}
-                                      onChange={this.handleChange}
-                                      style={this.state.adID ? {display: 'true'} : {display: 'none'}}
-                                      multiple>
-                            <option>lifestyle</option>
-                            <option>mobile</option>
-                            <option>motor</option>
-                            <option>work</option>
-                        </Form.Control>
-                        <br/>
-                        <Button variant="primary" type="submit">Guardar</Button>
-                        <Button variant="danger" onClick={this.goTolist}>Cancelar</Button>
-                    </Form.Group>
-                </Form>
+                                <Form.Label>Descripción</Form.Label>
+                                <Form.Control as="textarea" rows="3"
+                                              name="description"
+                                              value={ad.description}
+                                              onChange={this.handleChange}/>
+                            <Form.Label>Tipo</Form.Label>
+                            <Form.Control as="select"
+                                          name="type"
+                                          value={ad.type}
+                                          onChange={this.handleChange}>
+                                <option>--</option>
+                                <option>buy</option>
+                                <option>sell</option>
+                            </Form.Control>
+                                <Form.Label>Imagen anuncio</Form.Label>
+                                <Form.Control type="photo" placeholder="Foto del anuncio"
+                                              name="photo"
+                                              value={ad.photo}
+                                              onChange={this.handleChange}/>
+                            <Form.Label>Tags</Form.Label>
+                            <Form.Control as="select" name="tags"
+                                          onChange={this.handleChange}
+                                          style={this.state.adID ? {display: 'none'} : {display: 'true'}} multiple>
+                                <option>lifestyle</option>
+                                <option>mobile</option>
+                                <option>motor</option>
+                                <option>work</option>
+                            </Form.Control>
+                            <Form.Control as="select" name="tags"
+                                          value={ad.tags}
+                                          onChange={this.handleChange}
+                                          style={this.state.adID ? {display: 'true'} : {display: 'none'}}
+                                          multiple>
+                                <option>lifestyle</option>
+                                <option>mobile</option>
+                                <option>motor</option>
+                                <option>work</option>
+                            </Form.Control>
+                            <br/>
+                            <div className="divButtons">
+                                <Button variant="primary" type="submit">Guardar</Button>
+                                <Button variant="danger" onClick={this.goTolist}>Cancelar</Button>
+                            </div>
+                    </Form>
+                </div>
             </div>
         );
     }

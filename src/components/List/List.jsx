@@ -2,15 +2,15 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import UserContext from "../../context/user";
 import { getTags, getAds} from "../../API/api";
-import {Navbar, FormControl, Button, Form, Card, Jumbotron, Badge} from "react-bootstrap";
+import {Navbar, FormControl, Button, Form, Card, Jumbotron, Badge, Alert} from "react-bootstrap";
 import { restoreUser, deleteStorage } from "../../storage/storage";
-
+import './List.css';
 class List extends React.Component {
     constructor(props) {
         super(props);
-            this.state= {
+            this.state = {
                 ads: [],
-                myTag: '',
+                myTag: restoreUser().tag,
                 price: '',
                 name: '',
                 type: '',
@@ -62,21 +62,30 @@ class List extends React.Component {
     };
 
     buildAds = () => {
-                 return this.state.ads.map((ad) => {
-                    return(
-                        <Card key={ad._id} style={{ width: '18rem' }}>
-                            <Card.Img variant="top" src={ad.photo.slice(1,7) === 'images' ? `http://localhost:3001${ad.photo}` :
-                                `${ad.photo}`}/>
-                            <Card.Body>
-                                <Card.Title>{ad.name} <Badge variant="info">{ad.price}€</Badge> <Badge variant={ad.type === 'sell' ? "danger" : "success"}> {ad.type}</Badge></Card.Title>
-                                <Card.Text>
-                                    {ad.description}
-                                </Card.Text>
-                                <Button variant="primary" id={ad._id} onClick={this.goDetail}>Detalle</Button>
-                            </Card.Body>
-                        </Card>
-                    )
-                });
+        if(this.state.ads.length !== 0) {
+            return this.state.ads.map((ad) => {
+                return(
+                    <Card key={ad._id} className="cards">
+                        <Card.Img variant="top" src={ad.photo.slice(1,7) === 'images' ? `http://localhost:3001${ad.photo}` :
+                            `${ad.photo}`}/>
+                        <Card.Body>
+                            <Card.Title>{ad.name} <Badge variant="info">{ad.price}€</Badge> <Badge variant={ad.type === 'sell' ? "danger" : "success"}> {ad.type}</Badge></Card.Title>
+                            <Card.Text>
+                                {ad.description}
+                            </Card.Text>
+                            <Button variant="primary" id={ad._id} onClick={this.goDetail}>Detalle</Button>
+                        </Card.Body>
+                    </Card>
+                )
+            });
+        }else {
+            console.log(this.state.ads);
+            return (
+                <Alert variant="danger" className="alerts">
+                    No se han encontrado anuncios con los filtros indicados
+                </Alert>
+            );
+        }
     };
 
     handleSubmit(event) {
@@ -94,13 +103,13 @@ class List extends React.Component {
     }
     render()
     {
-        const  user = this.context.user;
+        const user = this.context.user;
         if (Object.entries(user).length === 0) {
             return null;
         }
         return (
             <div>
-                <Navbar bg="primary" variant="dark">
+                <Navbar bg="primary" variant="dark" className="navStyle">
                     <Navbar.Brand>
                         <img
                             alt=""
@@ -116,7 +125,7 @@ class List extends React.Component {
                         </Navbar.Text>
                     </Navbar.Collapse>
                 </Navbar>
-                <Jumbotron>
+                <Jumbotron className="jumbo">
                     <h2>Filtrar anuncios</h2>
                     <Form inline onSubmit={this.handleSubmit}>
                         <FormControl as="select" name="price" placeholder="Precio" className="mr-sm-2" onChange={this.handleChange}>
@@ -129,7 +138,6 @@ class List extends React.Component {
                         </FormControl>
                         <FormControl type="text" name="name" placeholder="Nombre" className="mr-sm-2" onChange={this.handleChange}/>
                         <FormControl as="select" name="myTag" placeholder="Tag" className={"mr-sm-2"}
-                                     value={this.context.user.tag ? this.context.user.tag : user.tag }
                                      onChange={this.handleChange}>
                             <option>Tag</option>
                             <option>all</option>
@@ -149,7 +157,7 @@ class List extends React.Component {
                     <br/>
                     <h5>Busqueda por Precio: {this.state.price}, Nombre: {this.state.name}, Tag: {this.state.myTag}, Venta: {this.state.type}</h5>
                 </Jumbotron>
-                <div className="row">
+                <div className="divCars">
                 {
                     this.buildAds()
                 }
