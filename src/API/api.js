@@ -48,21 +48,23 @@ const getOneAd = async (idAD) => {
 
 const newAd = async (ad) => {
     try {
-        await axios.post(`${API_URL}/anuncios/`, ad).then(res => {
-            return res;
+        await axios.post(`${API_URL}/anuncios/`, ad).then(() => {
+            return 'Anuncio guardado correctamente'
         });
     }catch (e) {
-
+        console.log(e.message);
+        throw new Error(e.message);
     }
 };
 
 const updateAd = async (idAD, ad) => {
     try {
-        await axios.put(`${API_URL}/anuncios/${idAD}`, ad).then(res => {
-            return res;
+        await axios.put(`${API_URL}/anuncios/${idAD}`, ad).then(() => {
+            return 'Anuncio actualizado correctamente';
         });
     }catch (e) {
-
+        console.log(e.message);
+        throw new Error(e.message);
     }
 };
 

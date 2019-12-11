@@ -25,6 +25,7 @@ class Register extends React.Component {
 
     componentDidMount() {
         deleteStorage();
+        this.props.loadSession({});
         getTags().then(tags => {
             this.setState({
                 tags,
@@ -50,6 +51,7 @@ class Register extends React.Component {
             alert('Alguno de los campos esta vacio');
             return;
         }
+        this.props.loadSession(this.state.user);
         this.context.updateUser(this.state.user);
         saveUser(this.state.user);
         this.props.history.push(`/list`);

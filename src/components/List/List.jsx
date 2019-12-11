@@ -5,6 +5,9 @@ import { getTags, getAds} from "../../API/api";
 import {Navbar, FormControl, Button, Form, Card, Jumbotron, Badge, Alert} from "react-bootstrap";
 import { restoreUser, deleteStorage } from "../../storage/storage";
 import './List.css';
+import {Spinner} from "react-bootstrap";
+
+
 class List extends React.Component {
     constructor(props) {
         super(props);
@@ -16,9 +19,9 @@ class List extends React.Component {
                 type: '',
                 tags: []
             };
-        this.actualizaAds();
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.actualizaAds();
         this.deleteProfile = this.deleteProfile.bind(this);
     }
 
@@ -45,11 +48,7 @@ class List extends React.Component {
     }
 
     actualizaAds() {
-        getAds(this.state.myTag, this.state.price, this.state.name, this.state.type).then(ads => {
-            this.setState({
-                ads: ads,
-            });
-        });
+        this.props.loadAdds(this.state.myTag, this.state.price, this.state.name, this.state.type);
     }
 
     goDetail = (event) => {
@@ -58,12 +57,13 @@ class List extends React.Component {
     };
 
     newAdd = () => {
+        this.props.clearAdd();
         this.props.history.push('/create');
     };
 
     buildAds = () => {
-        if(this.state.ads.length !== 0) {
-            return this.state.ads.map((ad) => {
+        if(this.props.adds.length !== 0) {
+            return this.props.adds.map((ad) => {
                 return(
                     <Card key={ad._id} className="cards">
                         <Card.Img variant="top" src={ad.photo.slice(1,7) === 'images' ? `http://localhost:3001${ad.photo}` :
@@ -80,9 +80,10 @@ class List extends React.Component {
             });
         }else {
             return (
-                <Alert variant="danger" className="alerts">
-                    No se han encontrado anuncios con los filtros indicados
-                </Alert>
+                <div>
+                    {this.props.ui.isFetching && <Spinner animation="border" variant="primary" />}
+                    {this.props.ui.error && <Alert variant={'danger'}>{this.props.error}</Alert>}
+                </div>
             );
         }
     };
@@ -102,6 +103,7 @@ class List extends React.Component {
     }
     render()
     {
+        // antigua versión con context
         const user = this.context.user;
         if (Object.entries(user).length === 0) {
             return null;
@@ -117,10 +119,9 @@ class List extends React.Component {
                         />
                         {' Wallakeep '}
                     </Navbar.Brand>
-                    <Button variant="danger" onClick={this.newAdd}>Crear Anuncio</Button>
                     <Navbar.Collapse className="justify-content-end">
                         <Navbar.Text onClick={this.deleteProfile}>
-                            Bienvenido: <b>{user.name}</b>
+                            Bienvenido: <b>{this.props.session.user.name}</b>
                         </Navbar.Text>
                     </Navbar.Collapse>
                 </Navbar>
@@ -155,6 +156,7 @@ class List extends React.Component {
                     </Form>
                     <br/>
                     <h5>Busqueda por Precio: {this.state.price}, Nombre: {this.state.name}, Tag: {this.state.myTag}, Venta: {this.state.type}</h5>
+                    <Button variant="danger" onClick={this.newAdd}>Crear nuevo Anuncio</Button>
                 </Jumbotron>
                 <div className="divCars">
                 {

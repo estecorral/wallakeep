@@ -1,12 +1,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
-import Register from './components/Register/Register';
-import List from "./components/List/List";
-import Detail from "./components/Detail/Detail";
-import Create from "./components/Create/Create";
+import Register from '../components/Register';
+import List from "../components/List";
+import Detail from "../components/Detail";
+import Create from "../components/Create";
 import './App.css';
-import UserContext from "./context/user";
-import ErrorBoundary from "./Error/ErrorBoundary"
+import UserContext from "../context/user";
+import ErrorBoundary from "../Error/ErrorBoundary"
+import {setUser} from "../components/store/actions";
 
 export default class App extends React.Component{
     constructor(props) {
@@ -18,8 +19,13 @@ export default class App extends React.Component{
         }
     }
 
+    componentDidMount() {
+
+    }
+
     updateUser = (user) => {
         this.setState({ user });
+       this.props.loadSession(setUser(user));
     };
     render() {
         return (
