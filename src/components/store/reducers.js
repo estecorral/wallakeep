@@ -36,10 +36,8 @@ export const add = (state = initialState.add, action) => {
         case TYPES.FETCH_GET_ADD:
             return action.add;
         case TYPES.FETCH_EDIT_ADD:
-            return state.add;
+            return action.add;
         case TYPES.FETCH_NEW_ADD:
-            return state.add;
-        case TYPES.HANDLE_CHANGE_ADD:
             return action.add;
         default:
             return state;

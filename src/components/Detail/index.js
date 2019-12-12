@@ -6,7 +6,6 @@ import { getOneAd } from "../../API/api";
 
 function mapStateToProps(state) {
     return {
-        session: state.user,
         add: state.add,
     };
 }

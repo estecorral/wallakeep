@@ -1,19 +1,19 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import UserContext from "../../context/user";
-import { getTags, getAds} from "../../API/api";
-import {Navbar, FormControl, Button, Form, Card, Jumbotron, Badge, Alert} from "react-bootstrap";
-import { restoreUser, deleteStorage } from "../../storage/storage";
+import { getTags } from "../../API/api";
+import { FormControl, Button, Form, Card, Jumbotron, Badge, Alert} from "react-bootstrap";
+import { restoreUser } from "../../storage/storage";
 import './List.css';
 import {Spinner} from "react-bootstrap";
-
+import NavBar from "../NavBar";
 
 class List extends React.Component {
     constructor(props) {
         super(props);
             this.state = {
                 ads: [],
-                myTag: restoreUser().tag,
+                myTag: '',
                 price: '',
                 name: '',
                 type: '',
@@ -21,23 +21,16 @@ class List extends React.Component {
             };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.actualizaAds();
-        this.deleteProfile = this.deleteProfile.bind(this);
     }
 
     componentDidMount() {
         this.updateUserFromStorage();
+        this.actualizaAds();
         getTags().then(tags => {
             this.setState({
                 tags,
             });
         });
-    }
-
-    deleteProfile(event) {
-        event.preventDefault();
-        deleteStorage();
-        this.props.history.push('/register');
     }
 
     updateUserFromStorage() {
@@ -103,28 +96,13 @@ class List extends React.Component {
     }
     render()
     {
-        // antigua versión con context
-        const user = this.context.user;
-        if (Object.entries(user).length === 0) {
+        const user = this.props.session.user;
+        if (!user) {
             return null;
         }
         return (
             <div>
-                <Navbar bg="primary" variant="dark" className="navStyle">
-                    <Navbar.Brand>
-                        <img
-                            alt=""
-                            src="../../../img/shopping-outline.svg"
-                            className="d-inline-block align-top"
-                        />
-                        {' Wallakeep '}
-                    </Navbar.Brand>
-                    <Navbar.Collapse className="justify-content-end">
-                        <Navbar.Text onClick={this.deleteProfile}>
-                            Bienvenido: <b>{this.props.session.user.name}</b>
-                        </Navbar.Text>
-                    </Navbar.Collapse>
-                </Navbar>
+                <NavBar/>
                 <Jumbotron className="jumbo">
                     <h2>Filtrar anuncios</h2>
                     <Form inline onSubmit={this.handleSubmit}>
@@ -139,7 +117,7 @@ class List extends React.Component {
                         <FormControl type="text" name="name" placeholder="Nombre" className="mr-sm-2" onChange={this.handleChange}/>
                         <FormControl as="select" name="myTag" placeholder="Tag" className={"mr-sm-2"}
                                      onChange={this.handleChange}>
-                            <option>Tag</option>
+
                             <option>all</option>
                             {
                                 this.state.tags.map((tag, i) => {

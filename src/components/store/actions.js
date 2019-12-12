@@ -1,4 +1,19 @@
 import * as TYPES from './types';
+import {getAds} from "../../API/api";
+
+
+export const fetchAdds = (myTag, price, name, type) => {
+  return async function (dispatch, getState) {
+          dispatch(fetchAddRequest());
+          try {
+              await getAds(myTag, price, name, type).then(adds => {
+                  dispatch(fetchAddSuccess(adds));
+              });
+          } catch (e) {
+              dispatch(fetchAddFailure(e));
+          }
+  }
+};
 
 export const setUser = user => ({
    type: TYPES.SET_USER,
@@ -30,9 +45,4 @@ export const fetchUpdateAdd = () => ({
 
 export const fetchNewAdd = () => ({
     type: TYPES.FETCH_NEW_ADD,
-});
-
-export const hadleChangeAdd = add => ({
-   type: TYPES.HANDLE_CHANGE_ADD,
-   add,
 });

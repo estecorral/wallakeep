@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import Create from "./Create";
-import {fetchGetAddSuccess, fetchNewAdd, fetchUpdateAdd, hadleChangeAdd} from "../store/actions";
+import {fetchGetAddSuccess, fetchNewAdd, fetchUpdateAdd} from "../store/actions";
 import { getOneAd, newAd, updateAd } from "../../API/api";
 
 function mapStateToProps(state) {
@@ -24,19 +24,18 @@ function mapDispatchToProps(dispatch) {
         },
         saveAdd: async (idAdd, add) => {
             try {
-                await updateAd(idAdd, add).then();
+                await updateAd(idAdd, add).then(dispatch(fetchUpdateAdd()));
             }catch (e) {
                 return e;
             }
         },
         createAdd: async (newAdd) => {
             try {
-                await newAd(newAdd).then();
+                await newAd(newAdd).then(dispatch(fetchNewAdd()));
             }catch (e) {
                 return e;
             }
         },
-        handleUpdateAdd: add => dispatch(hadleChangeAdd(add)),
     };
 }
 

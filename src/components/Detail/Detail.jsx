@@ -1,8 +1,9 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import { getOneAd } from "../../API/api";
-import { Navbar, Figure, Badge, Button } from "react-bootstrap";
-import { restoreUser, deleteStorage } from "../../storage/storage";
+import { Figure, Badge, Button } from "react-bootstrap";
+import { deleteStorage } from "../../storage/storage";
+import NavBar from "../NavBar";
 
 class Detail extends React.Component {
     constructor(props) {
@@ -36,25 +37,10 @@ class Detail extends React.Component {
     }
 
     render() {
-        const user = restoreUser();
         if (Object.keys(this.props.add).length !== 0) {
             return(
                 <div>
-                    <Navbar bg="primary" variant="dark">
-                        <Navbar.Brand>
-                            <img
-                                alt=""
-                                src="../../../img/shopping-outline.svg"
-                                className="d-inline-block align-top"
-                            />
-                            {' Wallakeep '}
-                        </Navbar.Brand>
-                        <Navbar.Collapse className="justify-content-end">
-                            <Navbar.Text onClick={this.deleteProfile}>
-                                Bienvenido: <b>{ user.name }</b>
-                            </Navbar.Text>
-                        </Navbar.Collapse>
-                    </Navbar>
+                    <NavBar/>
                     {
                         <Figure className="figure">
                             <Figure.Image

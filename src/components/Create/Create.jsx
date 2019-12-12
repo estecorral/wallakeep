@@ -1,10 +1,8 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { Navbar, Form, Button } from "react-bootstrap";
-import { newAd, updateAd } from "../../API/api";
-import { getOneAd } from "../../API/api";
-import { restoreUser, deleteStorage } from "../../storage/storage";
+import { Form, Button } from "react-bootstrap";
 import './Create.css';
+import NavBar from "../NavBar";
 
 class Create extends React.Component {
     constructor(props) {
@@ -20,23 +18,19 @@ class Create extends React.Component {
             },
             adID: this.props.match.params.id,
         };
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    componentDidMount() {
         if (this.state.adID) {
             this.props.loadAdd(this.state.adID);
         }
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.deleteProfile = this.deleteProfile.bind(this);
     }
 
     goTolist = () => {
         this.props.history.push('/list');
     };
-
-    deleteProfile(event) {
-        event.preventDefault();
-        deleteStorage();
-        this.props.history.push('/register');
-    }
 
     handleChange(event) {
         const target = event.target;
@@ -74,9 +68,9 @@ class Create extends React.Component {
         if (!this.state.adID) {
             // newAd(this.state.ad).then();
             this.props.createAdd(this.state.ad);
-                setTimeout(() => {
-                    this.goTolist();
-                }, 1000);
+            setTimeout(() => {
+                this.goTolist();
+            }, 1000);
         } else {
             this.props.saveAdd(this.state.adID, this.state.ad);
             setTimeout(() => {
@@ -86,52 +80,47 @@ class Create extends React.Component {
     }
 
     render() {
-        const user = restoreUser();
         if (Object.keys(this.props.add).length !== 0 || !this.state.adID) {
             const add = this.props.add;
+            console.log(add);
             return(
                 <div className="createDiv">
-                    <Navbar bg="primary" variant="dark">
-                        <Navbar.Brand>
-                            <img
-                                alt=""
-                                src="../../../img/shopping-outline.svg"
-                                className="d-inline-block align-top"
-                            />
-                            {' Wallakeep '}
-                        </Navbar.Brand>
-                        <Navbar.Collapse className="justify-content-end">
-                            <Navbar.Text onClick={this.deleteProfile}>
-                                Bienvenido: <b>{ user.name }</b>
-                            </Navbar.Text>
-                        </Navbar.Collapse>
-                    </Navbar>
+                    <NavBar/>
                     {
                         this.props.add &&
                         <React.Fragment>
                             <h3>{add.name ? "Editar anuncio" : "Crear nuevo anuncio"}</h3>
                             <h6>{this.state.adID ? "id: " + this.state.adID : ""}</h6>
                             <div className="formDiv">
-                                <Form onSubmit={this.handleSubmit} className="form">
+                                <Form onSubmit={this.handleSubmit} className="form" initialValue={
+                                    {
+                                        name: add.name,
+                                        price: add.price,
+                                        description: add.description,
+                                        type: add.type,
+                                        photo: add.photo,
+                                        tags: add.tags,
+                                    }
+                                }>
                                     <Form.Label>Nombre anuncio</Form.Label>
                                     <Form.Control type="name" placeholder="Nombre Anuncio"
                                                   name="name"
-                                                  value={add.name}
+                                                  value={this.state.name}
                                                   onChange={this.handleChange}/>
                                     <Form.Label>Precio</Form.Label>
                                     <Form.Control type="precio" placeholder="Precio"
                                                   name="price"
-                                                  value={add.price}
+                                                  value={this.state.price}
                                                   onChange={this.handleChange}/>
                                     <Form.Label>Descripción</Form.Label>
                                     <Form.Control as="textarea" rows="3"
                                                   name="description"
-                                                  value={add.description}
+                                                  value={this.state.description}
                                                   onChange={this.handleChange}/>
                                     <Form.Label>Tipo</Form.Label>
                                     <Form.Control as="select"
                                                   name="type"
-                                                  value={add.type}
+                                                  value={this.state.type}
                                                   onChange={this.handleChange}>
                                         <option>--</option>
                                         <option>buy</option>
@@ -140,7 +129,7 @@ class Create extends React.Component {
                                     <Form.Label>Imagen anuncio</Form.Label>
                                     <Form.Control type="photo" placeholder="Foto del anuncio"
                                                   name="photo"
-                                                  value={add.photo}
+                                                  value={this.state.photo}
                                                   onChange={this.handleChange}/>
                                     <Form.Label>Tags</Form.Label>
                                     <Form.Control as="select" name="tags"
@@ -152,7 +141,7 @@ class Create extends React.Component {
                                         <option>work</option>
                                     </Form.Control>
                                     <Form.Control as="select" name="tags"
-                                                  value={add.tags}
+                                                  value={this.state.tags}
                                                   onChange={this.handleChange}
                                                   style={this.state.adID ? {display: 'true'} : {display: 'none'}}
                                                   multiple>

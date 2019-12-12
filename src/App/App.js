@@ -19,10 +19,6 @@ export default class App extends React.Component{
         }
     }
 
-    componentDidMount() {
-
-    }
-
     updateUser = (user) => {
         this.setState({ user });
        this.props.loadSession(setUser(user));
