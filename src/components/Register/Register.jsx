@@ -2,10 +2,10 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import UserContext from "../../context/user";
 import './Register.css';
-import {Navbar} from "react-bootstrap";
-import {Form} from "react-bootstrap";
-import {Button} from "react-bootstrap";
-import { getTags } from "../../API/api";
+import {Button, Navbar} from "react-bootstrap";
+import Form from "../form/Form";
+import Input from "../Input/Input";
+
 import { saveUser, deleteStorage } from '../../storage/storage';
 
 class Register extends React.Component {
@@ -15,9 +15,7 @@ class Register extends React.Component {
             user: {
                 name: '',
                 surname: '',
-                tag: null,
             },
-            tags : [],
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -26,11 +24,6 @@ class Register extends React.Component {
     componentDidMount() {
         deleteStorage();
         this.props.loadSession({});
-        getTags().then(tags => {
-            this.setState({
-                tags,
-            });
-        });
     }
 
     handleChange(event) {
@@ -45,15 +38,10 @@ class Register extends React.Component {
         }));
     }
     handleSubmit(event) {
-        event.preventDefault();
-        if (this.state.user.name.trim().length === 0 || this.state.user.surname.trim().length === 0 ||
-        !this.state.user.tag) {
-            alert('Alguno de los campos esta vacio');
-            return;
-        }
-        this.props.loadSession(this.state.user);
-        this.context.updateUser(this.state.user);
-        saveUser(this.state.user);
+        console.log(event);
+        this.props.loadSession(event);
+        this.context.updateUser(event);
+        saveUser(event);
         this.props.history.push(`/list`);
     }
 
@@ -74,33 +62,9 @@ class Register extends React.Component {
                     <div className="general">
                         <div className="formReg">
                             <h1>Inicio de sesión:</h1>
-                            <Form onSubmit={this.handleSubmit}>
-                                <Form.Group controlId="name">
-                                    <Form.Label>Name:</Form.Label>
-                                    <Form.Control type="text" placeholder="Name"
-                                                  name="name"
-                                                  onChange={this.handleChange}/>
-                                </Form.Group>
-
-                                <Form.Group controlId="surname">
-                                    <Form.Label>Surname:</Form.Label>
-                                    <Form.Control type="text" placeholder="Surname"
-                                                  name="surname"
-                                                  onChange={this.handleChange}/>
-                                </Form.Group>
-                                <Form.Group controlId="tag">
-                                    <Form.Label>Tag:</Form.Label>
-                                    <Form.Control as="select"
-                                                  name="tag"
-                                                  onChange={this.handleChange}>
-                                        <option>--</option>
-                                        {
-                                            this.state.tags.map((tag, i) => {
-                                                return <option key={i}>{ tag }</option>;
-                                            })
-                                        }
-                                    </Form.Control>
-                                </Form.Group>
+                            <Form onSubmit={this.handleSubmit} initialValue={{name:'', surname:''}} >
+                                <Input type="text" name="name"/>
+                                <Input type="text" name="surname"/>
                                 <Button variant="primary" type="submit">
                                     Submit
                                 </Button>

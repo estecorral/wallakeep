@@ -66,7 +66,6 @@ class Create extends React.Component {
             return;
         }
         if (!this.state.adID) {
-            // newAd(this.state.ad).then();
             this.props.createAdd(this.state.ad);
             setTimeout(() => {
                 this.goTolist();
@@ -82,7 +81,6 @@ class Create extends React.Component {
     render() {
         if (Object.keys(this.props.add).length !== 0 || !this.state.adID) {
             const add = this.props.add;
-            console.log(add);
             return(
                 <div className="createDiv">
                     <NavBar/>
@@ -92,35 +90,26 @@ class Create extends React.Component {
                             <h3>{add.name ? "Editar anuncio" : "Crear nuevo anuncio"}</h3>
                             <h6>{this.state.adID ? "id: " + this.state.adID : ""}</h6>
                             <div className="formDiv">
-                                <Form onSubmit={this.handleSubmit} className="form" initialValue={
-                                    {
-                                        name: add.name,
-                                        price: add.price,
-                                        description: add.description,
-                                        type: add.type,
-                                        photo: add.photo,
-                                        tags: add.tags,
-                                    }
-                                }>
+                                <Form onSubmit={this.handleSubmit} className="form">
                                     <Form.Label>Nombre anuncio</Form.Label>
                                     <Form.Control type="name" placeholder="Nombre Anuncio"
                                                   name="name"
-                                                  value={this.state.name}
+                                                  value={add.name}
                                                   onChange={this.handleChange}/>
                                     <Form.Label>Precio</Form.Label>
                                     <Form.Control type="precio" placeholder="Precio"
                                                   name="price"
-                                                  value={this.state.price}
+                                                  value={add.price}
                                                   onChange={this.handleChange}/>
                                     <Form.Label>Descripción</Form.Label>
                                     <Form.Control as="textarea" rows="3"
                                                   name="description"
-                                                  value={this.state.description}
+                                                  value={add.description}
                                                   onChange={this.handleChange}/>
                                     <Form.Label>Tipo</Form.Label>
                                     <Form.Control as="select"
                                                   name="type"
-                                                  value={this.state.type}
+                                                  value={add.type}
                                                   onChange={this.handleChange}>
                                         <option>--</option>
                                         <option>buy</option>
@@ -129,7 +118,7 @@ class Create extends React.Component {
                                     <Form.Label>Imagen anuncio</Form.Label>
                                     <Form.Control type="photo" placeholder="Foto del anuncio"
                                                   name="photo"
-                                                  value={this.state.photo}
+                                                  value={add.photo}
                                                   onChange={this.handleChange}/>
                                     <Form.Label>Tags</Form.Label>
                                     <Form.Control as="select" name="tags"
@@ -141,7 +130,7 @@ class Create extends React.Component {
                                         <option>work</option>
                                     </Form.Control>
                                     <Form.Control as="select" name="tags"
-                                                  value={this.state.tags}
+                                                  value={add.tags}
                                                   onChange={this.handleChange}
                                                   style={this.state.adID ? {display: 'true'} : {display: 'none'}}
                                                   multiple>
