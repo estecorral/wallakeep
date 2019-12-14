@@ -24,9 +24,19 @@ class Create extends React.Component {
 
     componentDidMount() {
         if (this.state.adID) {
-            this.props.loadAdd(this.state.adID);
+            console.log(this.state.adID);
+            this.loadAdd(this.state.adID);
+            //this.props.loadAdd(this.state.adID);
         }
     }
+
+    loadAdd = adID => {
+        this.props.loadAdd(adID).then(() => {
+            this.setState({
+                ad: this.props.add,
+            });
+        });
+    };
 
     goTolist = () => {
         this.props.history.push('/list');
@@ -66,28 +76,24 @@ class Create extends React.Component {
             return;
         }
         if (!this.state.adID) {
-            this.props.createAdd(this.state.ad);
-            setTimeout(() => {
-                this.goTolist();
-            }, 1000);
+            this.props.createAdd(this.state.ad)
+                .then(() => this.goTolist());
         } else {
-            this.props.saveAdd(this.state.adID, this.state.ad);
-            setTimeout(() => {
-                this.props.history.push(`/detail/${this.state.adID}`);
-            }, 1000);
+            this.props.saveAdd(this.state.adID, this.state.ad)
+                .then(() => this.props.history.push(`/detail/${this.state.adID}`));
         }
     }
 
     render() {
-        if (Object.keys(this.props.add).length !== 0 || !this.state.adID) {
-            const add = this.props.add;
+        if (Object.keys(this.state.ad).length !== 0 || !this.state.adID) {
+            const add = this.state.ad;
             return(
                 <div className="createDiv">
                     <NavBar/>
                     {
                         this.props.add &&
                         <React.Fragment>
-                            <h3>{add.name ? "Editar anuncio" : "Crear nuevo anuncio"}</h3>
+                            <h3>{this.state.name ? "Editar anuncio" : "Crear nuevo anuncio"}</h3>
                             <h6>{this.state.adID ? "id: " + this.state.adID : ""}</h6>
                             <div className="formDiv">
                                 <Form onSubmit={this.handleSubmit} className="form">

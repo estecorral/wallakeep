@@ -1,6 +1,5 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { getOneAd } from "../../API/api";
 import { Figure, Badge, Button } from "react-bootstrap";
 import { deleteStorage } from "../../storage/storage";
 import NavBar from "../NavBar";
@@ -9,16 +8,22 @@ class Detail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
-        const adID = this.props.match.params.id;
-        this.getAdd(adID);
-        getOneAd(adID).then(ad => {
-            this.setState({ ad });
-        });
+
+
         this.deleteProfile = this.deleteProfile.bind(this);
     }
 
+    componentDidMount() {
+        const adID = this.props.match.params.id;
+        this.getAdd(adID);
+    }
+
     getAdd(adID) {
-        this.props.loadAdd(adID);
+        this.props.loadAdd(adID).then(() => {
+            this.setState({
+                add: this.props.add,
+            })
+        });
     }
 
     goTolist = () => {
@@ -37,7 +42,8 @@ class Detail extends React.Component {
     }
 
     render() {
-        if (Object.keys(this.props.add).length !== 0) {
+        if (Object.keys(this.state).length !== 0) {
+            const add = this.state.add;
             return(
                 <div>
                     <NavBar/>
@@ -47,15 +53,15 @@ class Detail extends React.Component {
                                 width={171}
                                 height={180}
                                 alt="500x400"
-                                src={this.props.add.photo.slice(1,7) === 'images' ? `http://localhost:3001${this.props.add.photo}` : `${this.props.add.photo}`}
+                                src={add.photo.slice(1,7) === 'images' ? `http://localhost:3001${add.photo}` : `${add.photo}`}
                             />
                             <Figure.Caption>
-                                <h4>{this.props.add.name} <Badge variant="info">{this.props.add.price}€</Badge> <Badge variant={this.props.add.type === 'sell' ? "danger" : "success"}> {this.props.add.type}</Badge></h4>
-                                {this.props.add.description}
+                                <h4>{add.name} <Badge variant="info">{add.price}€</Badge> <Badge variant={add.type === 'sell' ? "danger" : "success"}> {add.type}</Badge></h4>
+                                {add.description}
                             </Figure.Caption>
                             <br/>
                             {
-                                this.props.add.tags.map((tag, i) => {
+                                add.tags.map((tag, i) => {
                                     return(
                                         <Badge pill key={i} variant="secondary">
                                             {tag}
@@ -64,7 +70,7 @@ class Detail extends React.Component {
                                 })
                             }
                             <br/>
-                            <Button variant="primary" id={this.props.add._id} onClick={this.gotoEdit}>Editar</Button>
+                            <Button variant="primary" id={add._id} onClick={this.gotoEdit}>Editar</Button>
                             <Button variant="danger" onClick={this.goTolist}>Volver</Button>
                         </Figure>
                     }
