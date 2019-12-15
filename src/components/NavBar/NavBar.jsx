@@ -20,7 +20,6 @@ class NavBar extends React.Component {
     }
 
     checkUser() {
-        console.log(this.props.session.user);
         if(this.props.session.user === {}) {
             this.props.history.push('/register');
         }

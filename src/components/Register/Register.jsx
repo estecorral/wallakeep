@@ -38,7 +38,6 @@ class Register extends React.Component {
         }));
     }
     handleSubmit(event) {
-        console.log(event);
         this.props.loadSession(event);
         this.context.updateUser(event);
         saveUser(event);

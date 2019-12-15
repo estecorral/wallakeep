@@ -24,7 +24,6 @@ class Create extends React.Component {
 
     componentDidMount() {
         if (this.state.adID) {
-            console.log(this.state.adID);
             this.loadAdd(this.state.adID);
             //this.props.loadAdd(this.state.adID);
         }
@@ -91,7 +90,7 @@ class Create extends React.Component {
                 <div className="createDiv">
                     <NavBar/>
                     {
-                        this.props.add &&
+                        add &&
                         <React.Fragment>
                             <h3>{this.state.name ? "Editar anuncio" : "Crear nuevo anuncio"}</h3>
                             <h6>{this.state.adID ? "id: " + this.state.adID : ""}</h6>

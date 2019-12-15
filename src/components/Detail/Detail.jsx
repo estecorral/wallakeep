@@ -9,7 +9,6 @@ class Detail extends React.Component {
         super(props);
         this.state = {};
 
-
         this.deleteProfile = this.deleteProfile.bind(this);
     }
 
