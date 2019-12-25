@@ -1,7 +1,7 @@
 import { setUser, fetchAdds } from './actions';
 import * as Types from './types';
-import * as API from '../../API/api'
-jest.mock('../../API/api');
+import * as API from '../API/api'
+jest.mock('../API/api');
 
 describe('actions', () => {
     describe('setUser', () => {

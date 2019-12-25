@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import List from "./List";
-import {fetchAdds, fetchGetAddSuccess} from "../store/actions";
+import {fetchAdds, fetchGetAddSuccess} from "../../store/actions";
 
 
 function mapStateToProps(state) {

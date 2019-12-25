@@ -4,7 +4,7 @@ import './index.css';
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'typeface-roboto';
-import {configureStore} from "./components/store";
+import {configureStore} from "./store";
 import Root from './components/Root';
 
 const store = configureStore();

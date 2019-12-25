@@ -1,5 +1,5 @@
 import * as TYPES from './types';
-import {getAds} from "../../API/api";
+import {getAds} from "../API/api";
 
 
 export const fetchAdds = (myTag, price, name, type) => {

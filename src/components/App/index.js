@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import App from "./App";
-import {setUser} from "../components/store/actions";
+import {setUser} from "../../store/actions";
 
 function mapDispatchToProps(dispatch) {
     return {

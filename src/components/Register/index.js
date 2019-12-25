@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import Register from "./Register";
-import {setUser} from "../store/actions";
+import {setUser} from "../../store/actions";
 
 function mapStateToProps(state) {
     return {

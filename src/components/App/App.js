@@ -1,13 +1,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
-import Register from '../components/Register';
-import List from "../components/List";
-import Detail from "../components/Detail";
-import Create from "../components/Create";
+import Register from '../Register';
+import List from "../List";
+import Detail from "../Detail";
+import Create from "../Create";
 import './App.css';
-import UserContext from "../context/user";
-import ErrorBoundary from "../Error/ErrorBoundary"
-import {setUser} from "../components/store/actions";
+import UserContext from "../../context/user";
+import ErrorBoundary from "../../Error/ErrorBoundary"
+import {setUser} from "../../store/actions";
 
 export default class App extends React.Component{
     constructor(props) {

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import Detail from "./Detail";
-import {fetchGetAddSuccess} from "../store/actions";
+import {fetchGetAddSuccess} from "../../store/actions";
 import { getOneAd } from "../../API/api";
 
 function mapStateToProps(state) {
