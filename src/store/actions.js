@@ -1,5 +1,5 @@
 import * as TYPES from './types';
-import {getAds, getOneAd} from "../API/api";
+import {getAds, getOneAd, updateAd, newAd} from "../API/api";
 
 
 export const fetchAdds = (myTag, price, name, type) => {
@@ -24,7 +24,21 @@ export const fetchGetAdd = (idAdd) => {
             dispatch(fetchGetAddFailure(e));
         }
     }
-}
+};
+
+export const fetchSaveAdd = (idAdd, add) => {
+    return async function (dispatch, getState) {
+        await updateAd(idAdd, add);
+        dispatch(fetchUpdateAdd());
+    }
+};
+
+export const fetchCreateAdd = (add) => {
+  return async function (dispatch, getState) {
+      await newAd(add);
+      dispatch(fetchNewAdd());
+  }
+};
 
 export const setSession = (...args) => (dispatch, { history }) => {
     dispatch(setUser(...args));
