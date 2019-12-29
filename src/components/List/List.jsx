@@ -1,9 +1,7 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import UserContext from "../../context/user";
 import { getTags } from "../../API/api";
 import { FormControl, Button, Form, Card, Jumbotron, Badge, Alert} from "react-bootstrap";
-import { restoreUser } from "../../storage/storage";
 import './List.css';
 import {Spinner} from "react-bootstrap";
 import NavBar from "../NavBar";
@@ -24,20 +22,12 @@ class List extends React.Component {
     }
 
     componentDidMount() {
-        this.updateUserFromStorage();
         this.actualizaAds();
         getTags().then(tags => {
             this.setState({
                 tags,
             });
         });
-    }
-
-    updateUserFromStorage() {
-        if (restoreUser() !== null) {
-            return this.context.updateUser(restoreUser());
-        }
-        this.props.history.push('/register');
     }
 
     actualizaAds() {
@@ -96,10 +86,6 @@ class List extends React.Component {
     }
     render()
     {
-        const user = this.props.session.user;
-        if (!user) {
-            return null;
-        }
         return (
             <div>
                 <NavBar/>
@@ -145,7 +131,5 @@ class List extends React.Component {
         );
     }
 }
-
-List.contextType = UserContext;
 
 export default withRouter(List);

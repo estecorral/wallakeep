@@ -18,11 +18,8 @@ class Detail extends React.Component {
     }
 
     getAdd(adID) {
-        this.props.loadAdd(adID).then(() => {
-            this.setState({
-                add: this.props.add,
-            })
-        });
+        this.props.loadAdd(adID);
+        console.log(this.props.add);
     }
 
     goTolist = () => {
@@ -41,8 +38,8 @@ class Detail extends React.Component {
     }
 
     render() {
-        if (Object.keys(this.state).length !== 0) {
-            const add = this.state.add;
+        if (Object.keys(this.props.add).length !== 0) {
+            const add = this.props.add;
             return(
                 <div>
                     <NavBar/>

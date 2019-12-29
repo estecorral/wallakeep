@@ -1,8 +1,7 @@
 import { connect } from 'react-redux';
 
 import Detail from "./Detail";
-import {fetchGetAddSuccess} from "../../store/actions";
-import { getOneAd } from "../../API/api";
+import { fetchGetAdd } from "../../store/actions";
 
 function mapStateToProps(state) {
     return {
@@ -12,16 +11,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        loadAdd: async (idAd) => {
-            try {
-               await getOneAd(idAd).then(add => {
-                   dispatch(fetchGetAddSuccess(add));
-                });
-
-            } catch (e) {
-               return e;
-            }
-        },
+        loadAdd: (idAd) => dispatch(fetchGetAdd(idAd)),
     };
 }
 

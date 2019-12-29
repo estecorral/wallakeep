@@ -11,37 +11,17 @@ import { saveUser, deleteStorage } from '../../storage/storage';
 class Register extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            user: {
-                name: '',
-                surname: '',
-            },
-        };
-        this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
         deleteStorage();
-        this.props.loadSession({});
     }
 
-    handleChange(event) {
-        const target = event.target;
-        const value = target.value;
-        const name = target.name;
-        this.setState(({ user }) => ({
-            user: {
-                ...user,
-                [name]: value
-            }
-        }));
-    }
     handleSubmit(event) {
         this.props.loadSession(event);
-        this.context.updateUser(event);
         saveUser(event);
-        this.props.history.push(`/list`);
+        this.props.history.push('/list');
     }
 
         render()

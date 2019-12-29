@@ -16,6 +16,8 @@ const initialState = {
 export const user = (state = initialState.user, action) => {
     if (action.type === TYPES.SET_USER) {
         return action.user;
+    } else if (action.type === TYPES.UNSET_USER) {
+        return state;
     } else {
         return state;
     }
@@ -33,7 +35,7 @@ export const adds = (state = initialState.adds, action) => {
 // Reducer gestion de un anuncio
 export const add = (state = initialState.add, action) => {
     switch (action.type) {
-        case TYPES.FETCH_GET_ADD:
+        case TYPES.FETCH_GET_ADD_SUCCESS:
             return action.add;
         case TYPES.FETCH_EDIT_ADD:
             return 'Acción realizada';

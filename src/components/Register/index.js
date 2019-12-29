@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import Register from "./Register";
-import {setUser} from "../../store/actions";
+import {setSession} from "../../store/actions";
 
 function mapStateToProps(state) {
     return {
@@ -9,9 +9,9 @@ function mapStateToProps(state) {
     };
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch, ownProps) {
     return {
-        loadSession: user => dispatch(setUser(user)),
+        loadSession: user => dispatch(setSession(user), ownProps.push),
     };
 }
 

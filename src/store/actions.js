@@ -1,23 +1,46 @@
 import * as TYPES from './types';
-import {getAds} from "../API/api";
+import {getAds, getOneAd} from "../API/api";
 
 
 export const fetchAdds = (myTag, price, name, type) => {
   return async function (dispatch, getState) {
           dispatch(fetchAddRequest());
           try {
-              await getAds(myTag, price, name, type).then(adds => {
-                  dispatch(fetchAddSuccess(adds));
-              });
+              const ads = await getAds(myTag, price, name, type);
+              dispatch(fetchAddSuccess(ads));
           } catch (e) {
               dispatch(fetchAddFailure(e));
           }
   }
 };
 
+export const fetchGetAdd = (idAdd) => {
+    return async function (dispatch, getState) {
+        dispatch(fetchGetAddRequest());
+        try {
+            const ad = await getOneAd(idAdd);
+            dispatch(fetchGetAddSuccess(ad));
+        } catch (e) {
+            dispatch(fetchGetAddFailure(e));
+        }
+    }
+}
+
+export const setSession = (...args) => (dispatch, { history }) => {
+    dispatch(setUser(...args));
+};
+
+export const unSetSession = () => (dispatch, { history }) => {
+    dispatch(unSetUser());
+};
+
 export const setUser = user => ({
    type: TYPES.SET_USER,
     user,
+});
+
+export const unSetUser = () => ({
+    type: TYPES.UNSET_USER,
 });
 
 export const fetchAddRequest = () => ({
@@ -35,8 +58,17 @@ export const fetchAddSuccess = adds => ({
 });
 
 export const fetchGetAddSuccess = add => ({
-    type: TYPES.FETCH_GET_ADD,
+    type: TYPES.FETCH_GET_ADD_SUCCESS,
     add,
+});
+
+export const fetchGetAddRequest = () => ({
+    type: TYPES.FETCH_GET_ADD_REQUEST,
+});
+
+export const fetchGetAddFailure = error => ({
+    type: TYPES.FETCH_GET_ADD_FAILURE,
+    error,
 });
 
 export const fetchUpdateAdd = () => ({

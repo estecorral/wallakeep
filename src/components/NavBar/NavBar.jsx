@@ -2,6 +2,7 @@ import React from "react";
 import { Navbar } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
 import {deleteStorage} from "../../storage/storage";
+import {restoreUser} from "../../storage/storage";
 
 class NavBar extends React.Component {
     constructor(props) {
@@ -15,20 +16,20 @@ class NavBar extends React.Component {
 
     deleteProfile(event) {
         event.preventDefault();
+        this.props.unloadSession();
         deleteStorage();
         this.props.history.push('/register');
     }
 
     checkUser() {
-        if(this.props.session.user === {}) {
+        if(restoreUser()) {
+            this.props.loadSession(restoreUser());
+        }
+        if(!this.props.session) {
             this.props.history.push('/register');
         }
     }
     render() {
-        const user = this.props.session.user;
-        if (!user) {
-            return null;
-        }
         return(
             <Navbar bg="primary" variant="dark">
                 <Navbar.Brand>
@@ -41,7 +42,7 @@ class NavBar extends React.Component {
                 </Navbar.Brand>
                 <Navbar.Collapse className="justify-content-end">
                     <Navbar.Text onClick={this.deleteProfile}>
-                        Bienvenido: <b>{ user.name }</b>
+                        Bienvenido: <b>{ this.props.session.name }</b>
                     </Navbar.Text>
                 </Navbar.Collapse>
             </Navbar>
