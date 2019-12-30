@@ -2,7 +2,6 @@ import React from "react";
 import { Navbar } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
 import {deleteStorage} from "../../storage/storage";
-import {restoreUser} from "../../storage/storage";
 
 class NavBar extends React.Component {
     constructor(props) {
@@ -11,23 +10,13 @@ class NavBar extends React.Component {
     }
 
     componentDidMount() {
-        this.checkUser();
+
     }
 
     deleteProfile(event) {
         event.preventDefault();
         this.props.unloadSession();
         deleteStorage();
-        this.props.history.push('/register');
-    }
-
-    checkUser() {
-        if(restoreUser()) {
-            this.props.loadSession(restoreUser());
-        }
-        if(!this.props.session) {
-            this.props.history.push('/register');
-        }
     }
     render() {
         return(

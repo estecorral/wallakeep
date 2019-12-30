@@ -1,6 +1,6 @@
 import * as TYPES from './types';
 import {getAds, getOneAd, updateAd, newAd} from "../API/api";
-
+import { push } from 'connected-react-router';
 
 export const fetchAdds = (myTag, price, name, type) => {
   return async function (dispatch, getState) {
@@ -40,12 +40,14 @@ export const fetchCreateAdd = (add) => {
   }
 };
 
-export const setSession = (...args) => (dispatch, { history }) => {
-    dispatch(setUser(...args));
+export const setSession = (user) => (dispatch) => {
+    dispatch(setUser(user));
+    dispatch(push('/list'));
 };
 
-export const unSetSession = () => (dispatch, { history }) => {
-    dispatch(unSetUser());
+export const unSetSession = (user) => (dispatch) => {
+    dispatch(unSetUser(user));
+    dispatch(push('/register'));
 };
 
 export const setUser = user => ({
@@ -53,8 +55,9 @@ export const setUser = user => ({
     user,
 });
 
-export const unSetUser = () => ({
+export const unSetUser = user => ({
     type: TYPES.UNSET_USER,
+    user,
 });
 
 export const fetchAddRequest = () => ({

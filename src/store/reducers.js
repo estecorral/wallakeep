@@ -14,12 +14,13 @@ const initialState = {
 
  // Reducer user:
 export const user = (state = initialState.user, action) => {
-    if (action.type === TYPES.SET_USER) {
-        return action.user;
-    } else if (action.type === TYPES.UNSET_USER) {
-        return state;
-    } else {
-        return state;
+    switch (action.type) {
+        case TYPES.SET_USER:
+            return action.user;
+        case TYPES.UNSET_USER:
+            return state;
+        default:
+            return state;
     }
 };
 
@@ -38,9 +39,9 @@ export const add = (state = initialState.add, action) => {
         case TYPES.FETCH_GET_ADD_SUCCESS:
             return action.add;
         case TYPES.FETCH_EDIT_ADD:
-            return 'Acción realizada';
+            return state;
         case TYPES.FETCH_NEW_ADD:
-            return 'Acción realizada';
+            return state;
         default:
             return state;
     }

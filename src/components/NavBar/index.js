@@ -13,7 +13,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         loadSession: user => dispatch(setUser(user)),
-        unloadSession: () => dispatch(unSetSession()),
+        unloadSession: () => dispatch(unSetSession({})),
     };
 }
 

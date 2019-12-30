@@ -11,7 +11,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        loadAdd: (idAd) => dispatch(fetchGetAdd(idAd)),
         saveAdd: (idAdd, add) => dispatch(fetchSaveAdd(idAdd, add)),
         createAdd: (newAdd) => dispatch(fetchCreateAdd(newAdd)),
     };

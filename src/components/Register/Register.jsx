@@ -21,7 +21,6 @@ class Register extends React.Component {
     handleSubmit(event) {
         this.props.loadSession(event);
         saveUser(event);
-        this.props.history.push('/list');
     }
 
         render()

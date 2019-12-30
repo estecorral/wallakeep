@@ -24,16 +24,13 @@ class Create extends React.Component {
 
     componentDidMount() {
         if (this.state.adID) {
-            this.loadAdd(this.state.adID);
-            //this.props.loadAdd(this.state.adID);
+            this.loadAdd();
         }
     }
 
-    loadAdd = adID => {
-        this.props.loadAdd(adID).then(() => {
-            this.setState({
-                ad: this.props.add,
-            });
+    loadAdd = () => {
+        this.setState({
+            ad: this.props.add,
         });
     };
 
@@ -76,7 +73,10 @@ class Create extends React.Component {
         }
         if (!this.state.adID) {
             this.props.createAdd(this.state.ad)
-                .then(() => this.goTolist());
+                .then(() => {
+                    console.log('guardo el anuncio');
+                    this.goTolist();
+                });
         } else {
             this.props.saveAdd(this.state.adID, this.state.ad)
                 .then(() => this.props.history.push(`/detail/${this.state.adID}`));
