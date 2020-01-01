@@ -6,21 +6,14 @@ import {Button, Navbar} from "react-bootstrap";
 import Form from "../form/Form";
 import Input from "../Input/Input";
 
-import { saveUser, deleteStorage } from '../../storage/storage';
-
 class Register extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    componentDidMount() {
-        deleteStorage();
-    }
-
     handleSubmit(event) {
         this.props.loadSession(event);
-        saveUser(event);
     }
 
         render()

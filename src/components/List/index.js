@@ -1,14 +1,13 @@
 import { connect } from 'react-redux';
-
+import { getAds, getUi } from "../../store/selectors";
 import List from "./List";
 import {fetchAdds, fetchGetAddSuccess} from "../../store/actions";
 
 
 function mapStateToProps(state) {
     return {
-        session: state.user,
-        adds: state.adds,
-        ui: state.ui,
+        adds: getAds(state),
+        ui: getUi(state),
     };
 }
 

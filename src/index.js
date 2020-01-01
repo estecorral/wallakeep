@@ -6,17 +6,30 @@ import 'typeface-roboto';
 import {configureStore} from "./store";
 import Root from './components/Root';
 import { createBrowserHistory } from 'history';
-// import { restoreUser } from './storage/storage';
+import { restoreUser, saveUser, deleteStorage } from './storage/storage';
 
 const history = createBrowserHistory();
 
-// const session = restoreUser() ||  undefined;
+const session = {user: restoreUser() ||  undefined } ;
+console.log(session);
 
-const store = configureStore();
+const store = configureStore(session);
+console.log(store.getState());
 
 const rootProps = {
     history,
-    store
+    store,
+    session
 };
 
+store.subscribe( () => {
+    const { user } = store.getState();
+    if(user !== undefined) {
+        saveUser(user);
+    } else {
+        deleteStorage();
+    }
+});
+
 ReactDOM.render(<Root {...rootProps}/>, document.getElementById('root'));
+

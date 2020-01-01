@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
-
+import { getAd } from '../../store/selectors'
 import Detail from "./Detail";
 import { fetchGetAdd } from "../../store/actions";
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
     return {
-        add: state.add,
+        add: getAd(state),
     };
 }
 

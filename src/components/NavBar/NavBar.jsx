@@ -1,7 +1,6 @@
 import React from "react";
 import { Navbar } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
-import {deleteStorage} from "../../storage/storage";
 
 class NavBar extends React.Component {
     constructor(props) {
@@ -9,14 +8,9 @@ class NavBar extends React.Component {
         this.deleteProfile = this.deleteProfile.bind(this);
     }
 
-    componentDidMount() {
-
-    }
-
     deleteProfile(event) {
         event.preventDefault();
         this.props.unloadSession();
-        deleteStorage();
     }
     render() {
         return(

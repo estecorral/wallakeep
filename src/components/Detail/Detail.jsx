@@ -38,7 +38,7 @@ class Detail extends React.Component {
     }
 
     render() {
-        if (Object.keys(this.props.add).length !== 0) {
+        if (Object.keys(this.props.add).length !== 0 ) {
             const add = this.props.add;
             return(
                 <div>

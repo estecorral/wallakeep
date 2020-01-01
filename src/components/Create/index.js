@@ -1,11 +1,12 @@
 import { connect } from 'react-redux';
 
 import Create from "./Create";
-import {fetchCreateAdd, fetchGetAdd, fetchSaveAdd} from "../../store/actions";
+import {fetchCreateAdd, fetchSaveAdd} from "../../store/actions";
+import {getAd} from "../../store/selectors";
 
 function mapStateToProps(state) {
     return {
-        add: state.add,
+        add: getAd(state),
     };
 }
 
