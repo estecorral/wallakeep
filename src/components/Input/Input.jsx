@@ -3,7 +3,7 @@ import FormContext from "../../context/form";
 
 function Input(props) {
     const context = useContext(FormContext);
-    console.log(context);
+
     return (
         <div>
             <label>{props.name}: </label>
