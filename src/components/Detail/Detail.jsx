@@ -1,15 +1,14 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import { Figure, Badge, Button } from "react-bootstrap";
-import { deleteStorage } from "../../storage/storage";
 import NavBar from "../NavBar";
 
 class Detail extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
 
-        this.deleteProfile = this.deleteProfile.bind(this);
+        };
     }
 
     componentDidMount() {
@@ -19,7 +18,6 @@ class Detail extends React.Component {
 
     getAdd(adID) {
         this.props.loadAdd(adID);
-        console.log(this.props.add);
     }
 
     goTolist = () => {
@@ -30,12 +28,6 @@ class Detail extends React.Component {
         event.preventDefault();
         this.props.history.push(`/create/${event.target.id}`);
     };
-
-    deleteProfile(event) {
-        event.preventDefault();
-        deleteStorage();
-        this.props.history.push('/register');
-    }
 
     render() {
         if (Object.keys(this.props.add).length !== 0 ) {

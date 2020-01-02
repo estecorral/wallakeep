@@ -3,12 +3,12 @@ import FormContext from "../../context/form";
 
 function Input(props) {
     const context = useContext(FormContext);
-
+    console.log(context);
     return (
         <div>
             <label>{props.name}: </label>
             <input {...props}
-                   value={context.value} onChange={context.onChange}
+                   value={context.value[props.name]} onChange={context.onChange}
             />
         </div>
     )

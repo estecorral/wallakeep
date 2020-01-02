@@ -6,6 +6,7 @@ function Form(props) {
 
     const handleChange = event => {
         setState({...state, [event.target.name]: event.target.value});
+        console.log(state);
     };
 
     const handleSubmit = event => {
@@ -14,7 +15,7 @@ function Form(props) {
     };
 
     return (
-        <FormContext.Provider value={{value: state.value, onChange: handleChange}}>
+        <FormContext.Provider value={{value: state, onChange: handleChange}}>
             <form onSubmit={handleSubmit}>
                 {
                     props.children

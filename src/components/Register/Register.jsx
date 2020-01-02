@@ -13,7 +13,11 @@ class Register extends React.Component {
     }
 
     handleSubmit(event) {
-        this.props.loadSession(event);
+        if(event.name && event.surname) {
+            this.props.loadSession(event);
+        } else {
+            alert("No se ha introducido name o surname");
+        }
     }
 
         render()

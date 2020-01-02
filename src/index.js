@@ -11,10 +11,8 @@ import { restoreUser, saveUser, deleteStorage } from './storage/storage';
 const history = createBrowserHistory();
 
 const session = {user: restoreUser() ||  undefined } ;
-console.log(session);
 
 const store = configureStore(session);
-console.log(store.getState());
 
 const rootProps = {
     history,
