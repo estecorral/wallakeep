@@ -12,6 +12,7 @@ class NavBar extends React.Component {
         event.preventDefault();
         this.props.unloadSession();
     }
+
     render() {
         return(
             <Navbar bg="primary" variant="dark">
